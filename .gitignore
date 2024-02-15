@@ -114,3 +114,7 @@ dep
 
 # Check output
 /check.vvp
+
+.cache/
+compile_commands.json
+build/
