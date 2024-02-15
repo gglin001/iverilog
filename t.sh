@@ -12,10 +12,15 @@ export PYTHONPATH=\$PYTHONPATH:\${EXT_PYTHONPATH}
 EOF
 
 apt update
+apt install -y locales
 apt install -y bison
 apt install -y flex
 apt install -y gperf
 micromamba install bear abseil-cpp
+
+# for locales warn
+sudo locale-gen en_US en_US.UTF-8
+sudo dpkg-reconfigure locales
 
 # autoconf
 sh autoconf.sh
