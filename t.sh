@@ -6,6 +6,11 @@ docker run -d -it \
 
 # #############################################################################
 
+cat >>~/.bashrc <<-EOF
+export PATH=\$PATH:\${EXT_PATH}
+export PYTHONPATH=\$PYTHONPATH:\${EXT_PYTHONPATH}
+EOF
+
 apt update
 apt install -y bison
 apt install -y flex
@@ -17,9 +22,11 @@ sh autoconf.sh
 
 # ./configure --prefix=$PWD/build
 
-# debug mode
-CXXFLAGS="-DDEBUG -g" \
-  CCFLAGS="-DDEBUG -g" \
+# debug mode with clang
+CC=clang \
+  CXX=clang++ \
+  CXXFLAGS="-DDEBUG -g -O0" \
+  CCFLAGS="-DDEBUG -g -O0" \
   ./configure --prefix=$PWD/build
 
 bear -- make -j16
@@ -27,10 +34,10 @@ make install
 
 # #############################################################################
 
-build/bin/iverilog \
+iverilog \
   -o hello examples/hello.vl
 
-build/bin/iverilog \
+iverilog \
   -o hello examples/sqrt.vl
 
-./hello
+vvp hello
